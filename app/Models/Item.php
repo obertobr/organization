@@ -13,5 +13,21 @@ class Item extends Model
         'nome',
         'descricao',
         'imagem',
+        'fk_item',
     ];
+
+    public function parentItem()
+    {
+        return $this->belongsTo(Item::class, 'fk_item_id_item');
+    }
+
+    public function childItems()
+    {
+        return $this->hasMany(Item::class, 'fk_item_id_item');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'item_tags', 'fk_item', 'fk_tag');
+    }
 }

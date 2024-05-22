@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('item_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->text('descricao')->nullable();
-            $table->text('imagem')->nullable();
-            $table->unsignedBigInteger('fk_item')->nullable();
+            $table->unsignedBigInteger('fk_tag');
+            $table->unsignedBigInteger('fk_item');
             $table->timestamps();
 
-            // Foreign key constraint
+            // Foreign key constraints
+            $table->foreign('fk_tag')->references('id')->on('tags')->onDelete('cascade');
             $table->foreign('fk_item')->references('id')->on('items')->onDelete('cascade');
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('item_tags');
     }
 };

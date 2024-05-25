@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<script src="{{ asset('assets/js/script.js')}}" defer></script>
 
 <header>
     <input id="search" type="search" autocomplete="off" />
@@ -10,33 +11,15 @@
     <p>Tags</p>
     <hr>
     <div>
-        <div>
-            <input type="checkbox">
-            <span>Eletronicos</span>
-        </div>
-        <div>
-            <input type="checkbox">
-            <span>Eletronicos</span>
-        </div>
+        @foreach ($tags as $tag)
+            <div>
+                <input type="checkbox" value="{{$tag->id}}">
+                <span>{{$tag->nome}}</span>
+            </div>
+        @endforeach
     </div>
 </div>
 <div id="items">
-    <div class="item">
-        <img src="http://127.0.0.1:8000/storage/images/yiWD08ImQroGgvgEvMygjUv9lP2HBhomEgx1Dk3C.jpg"/>
-        <p>Gaveta</p>
-    </div>
-    <div class="item">
-        <img src="http://127.0.0.1:8000/storage/images/yiWD08ImQroGgvgEvMygjUv9lP2HBhomEgx1Dk3C.jpg"/>
-        <p>Gaveta</p>
-    </div>
-    <div class="item">
-        <img src="http://127.0.0.1:8000/storage/images/yiWD08ImQroGgvgEvMygjUv9lP2HBhomEgx1Dk3C.jpg"/>
-        <p>Gaveta</p>
-    </div>
-    <div class="item">
-        <img src="http://127.0.0.1:8000/storage/images/yiWD08ImQroGgvgEvMygjUv9lP2HBhomEgx1Dk3C.jpg"/>
-        <p>Gaveta</p>
-    </div>
 </div>
 
 @endsection

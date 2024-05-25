@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Create Item</h1>
 
-    <form action="{{ route('items.store') }}" method="POST">
+    <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="nome">Item Name</label>
@@ -16,9 +16,9 @@
             <textarea name="descricao" class="form-control" id="descricao" required></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="imagem">Image URL</label>
-            <input type="text" name="imagem" class="form-control" id="imagem">
+        <div>
+            <label for="imagem">Imagem:</label>
+            <input type="file" name="imagem" id="imagem" required>
         </div>
 
         <div class="form-group">
@@ -33,7 +33,7 @@
 
         <div class="form-group">
             <label for="tags">Tags</label>
-            <input type="text" name="tags[]" class="form-control" id="tags" placeholder="Enter tags, separated by commas">
+            <input type="text" name="tags[]" class="form-control" id="tagss" placeholder="Enter tags, separated by commas">
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>

@@ -9,19 +9,33 @@ use App\Models\Tag;
 
 class ItemController extends Controller
 {
-    public readonly Item $item;
-
-    public function __construct() {
-        $this->item = new Item();
-    }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $items = $this->item->all();
-        return view('items', ['items' => $items]);
+        $tags = Tag::all();
+        return view('home', compact('tags'));
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        $tagsSelected = $request->input('tags');
+
+        $query = Item::query();
+
+        if(!empty($tagsSelected)){
+            $query->whereHas('tags', function($query) use ($tagsSelected) {
+                $query->whereIn('tags.id', $tagsSelected);
+            });
+        }
+
+        $query->where('nome', 'like', '%'.$searchTerm.'%');
+
+        $results = $query->select('id', 'nome', 'imagem')->get();
+
+        return response()->json($results);
     }
 
     /**
@@ -43,13 +57,21 @@ class ItemController extends Controller
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string',
-            'imagem' => 'nullable|string',
+            'imagem' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'fk_item' => 'nullable|exists:items,id',
             'tags' => 'nullable|array',
             'tags.*' => 'nullable|string',
         ]);
 
-        $item = Item::create($validatedData);
+        // Salvar a imagem
+        $path = $request->file('imagem')->store('public/images');
+
+        // Salvar o item
+        $item = new Item();
+        $item->nome = $request->nome;
+        $item->descricao = $request->descricao;
+        $item->imagem = $path;
+        $item->save();
 
         if (!empty($validatedData['tags'])) {
             $tagIds = [];

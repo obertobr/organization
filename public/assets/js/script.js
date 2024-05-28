@@ -4,39 +4,20 @@ let tagsChecks = document.querySelectorAll("#tags input");
 let items = document.getElementById("items");
 let searchInput = document.getElementById("search");
 
-let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 let searchEvent = null;
 let tagsSelected = [];
 
-function search(){
-    fetch("/search", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify({
-            search: searchInput.value,
-            tags: tagsSelected
-         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        items.innerHTML = '';
+function ShowItems(data){
+    items.innerHTML = '';
 
-        data.forEach(item => {
-            items.innerHTML += `
-            <div class="item">
-                <img src="${item.imagem.replace("public","storage")}"/>
-                <p>${item.nome}</p>
-            </div>
-            `
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Erro de conexão com o servidor');
-    })
+    data.forEach(item => {
+        items.innerHTML += `
+        <div class="item">
+            <img src="${item.imagem.replace("public","storage")}"/>
+            <p>${item.nome}</p>
+        </div>
+        `
+    });
 }
 
 tagsChecks.forEach(item => {
@@ -47,7 +28,7 @@ tagsChecks.forEach(item => {
         } else {
             tagsSelected = tagsSelected.filter(v => v !== value);
         }
-        search();
+        search(searchInput.value, tagsSelected).then(data => ShowItems(data));
     });
 })
 
@@ -65,9 +46,9 @@ filter.addEventListener("click", () => {
 
 searchInput.addEventListener("input", function () {
     clearTimeout(searchEvent);
-    searchEvent = setTimeout(() => {
-        search();
-    }, 500);
+    searchEvent = setTimeout(async () => {
+        search(searchInput.value, tagsSelected).then(data => ShowItems(data));
+    }, 200);
 });
 
-search();
+search(searchInput.value, tagsSelected).then(data => ShowItems(data));

@@ -23,7 +23,7 @@ class ItemController extends Controller
         $searchTerm = $request->input('search');
         $tagsSelected = $request->input('tags');
 
-        $query = Item::query();
+        $query = Item::orderBy('nome');
 
         if(!empty($tagsSelected)){
             $query->whereHas('tags', function($query) use ($tagsSelected) {
@@ -36,6 +36,12 @@ class ItemController extends Controller
         $results = $query->select('id', 'nome', 'imagem')->get();
 
         return response()->json($results);
+    }
+
+    public function tags()
+    {
+        $tags = Tag::query()->select('nome')->get();
+        return response()->json($tags);
     }
 
     /**
@@ -59,8 +65,7 @@ class ItemController extends Controller
             'descricao' => 'required|string',
             'imagem' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'fk_item' => 'nullable|exists:items,id',
-            'tags' => 'nullable|array',
-            'tags.*' => 'nullable|string',
+            'tags' => 'nullable|string',
         ]);
 
         // Salvar a imagem
@@ -70,12 +75,17 @@ class ItemController extends Controller
         $item = new Item();
         $item->nome = $request->nome;
         $item->descricao = $request->descricao;
+        $item->fk_item = $request->fk_item;
         $item->imagem = $path;
         $item->save();
 
-        if (!empty($validatedData['tags'])) {
+        $tags = json_decode($validatedData["tags"], true);
+
+        if (!empty($tags)) {
+            $tags = array_column($tags, 'value');
+
             $tagIds = [];
-            foreach ($validatedData['tags'] as $tagName) {
+            foreach ($tags as $tagName) {
                 $tag = Tag::firstOrCreate(['nome' => $tagName]);
                 $tagIds[] = $tag->id;
             }

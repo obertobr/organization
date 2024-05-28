@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+<script src="{{ asset('assets/js/global.js')}}" defer></script>
 <script src="{{ asset('assets/js/script.js')}}" defer></script>
 
 <header>

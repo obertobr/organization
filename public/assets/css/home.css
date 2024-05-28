@@ -130,6 +130,8 @@ header {
 .item > img {
     width: calc(25vw - 60px);
     border-radius: 15px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
 }
 
 .item > p {

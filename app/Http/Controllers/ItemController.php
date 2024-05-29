@@ -98,9 +98,11 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Item $item)
     {
-        //
+        $tags = $item->tags->pluck('nome')->implode(',');
+        $item->load('parentItem', 'childItems');
+        return view('item', compact('item', 'tags'));
     }
 
     /**

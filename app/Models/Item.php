@@ -18,12 +18,12 @@ class Item extends Model
 
     public function parentItem()
     {
-        return $this->belongsTo(Item::class, 'fk_item_id_item');
+        return $this->belongsTo(Item::class, 'fk_item');
     }
 
     public function childItems()
     {
-        return $this->hasMany(Item::class, 'fk_item_id_item');
+        return $this->hasMany(Item::class, 'fk_item');
     }
 
     public function tags()

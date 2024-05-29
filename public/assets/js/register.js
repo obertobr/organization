@@ -60,11 +60,6 @@ function ShowItems(data){
     });
 }
 
-function adjustTextareaHeight(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
-}
-
 uploadArea.addEventListener('click', () => !used && fileInput.click());
 
 uploadArea.addEventListener('dragover', (event) => {

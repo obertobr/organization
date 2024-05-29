@@ -21,10 +21,10 @@ getTags().then(response => {
     tagify = new Tagify(tagsInput, {
         whitelist: response.map(item => item.nome),
         dropdown: {
-            maxItems: 5,           // <- mixumum allowed rendered suggestions
-            classname: 'tags-look', // <- custom classname for this dropdown, so it could be targeted
-            enabled: 0,             // <- show suggestions on focus
-            closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+            maxItems: 7,
+            classname: 'tags-look',
+            position: 'text',
+            enabled: 1,
         }
     })
 })

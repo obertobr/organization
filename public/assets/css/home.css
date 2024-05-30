@@ -28,6 +28,7 @@ body {
 header {
     display: flex;
     align-items: center;
+    gap: 10px
 }
 
 #search{
@@ -37,8 +38,29 @@ header {
     font-size: 2em;
     color: white;
     padding: 0px 10px 0px 10px;
-    margin-right: 10px;
     flex-grow: 1;
+}
+
+#create {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--detail1);
+    border: 2px solid var(--detail2);
+    height: 2.2em;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    fill: var(--detail2);
+    transition: all 0.1s ease-out;
+    cursor: pointer;
+}
+
+#create:hover{
+    background-color: var(--detail2);
+}
+
+#create:hover > svg {
+    fill: var(--detail1);
 }
 
 #filter {
@@ -49,10 +71,10 @@ header {
     font-size: 2em;
     font-weight: 500;
     transition: all 0.1s ease-out;
+    cursor: pointer;
 }
 
 #filter:hover {
-    cursor: pointer;
     background-color: var(--detail2);
     color: var(--detail1);
 }

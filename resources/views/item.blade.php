@@ -45,7 +45,7 @@
     <p>Itens:</p>
     <div id="childItems">
         @foreach ($item->childItems as $childItem)
-            <a class="childItem" href="{{route('items.show',['item' => $childItem->id])}}">
+            <a class="childItem" href="{{route('items.show',['item' => $childItem->id])}}" iditem="{{$childItem->id}}">
                 <img src="{{asset(str_replace('public', 'storage', $childItem->imagem))}}" />
                 <p>{{$childItem->nome}}</p>
             </a>

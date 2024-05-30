@@ -4,16 +4,20 @@ const modalView = document.getElementById('addItem');
 const items = document.getElementById('itemsModal');
 const add = document.getElementById('add');
 const destroy = document.getElementById('delete');
+const childItems = document.getElementsByClassName('childItem');
 
 const tagsInput = document.getElementById('tagsInput');
 
+const id = parseInt(window.location.pathname.split('/').pop());
+let exclude = [id, ...Array.from(childItems).map(e => parseInt(e.getAttribute('iditem'))).slice(0, -1)]
+
 let searchEvent = null;
+let currentPage = 1;
+let final = false;
 
 tagify = new Tagify(tagsInput);
 
 function ShowItems(data){
-    items.innerHTML = '';
-
     data.forEach(item => {
         items.innerHTML += `
         <div class="itemsModal" iditem="${item.id}">
@@ -25,8 +29,6 @@ function ShowItems(data){
         const DOMitems = document.querySelectorAll(".itemsModal");
 
         DOMitems.forEach(item => {
-            const pathname = window.location.pathname;
-            const id = pathname.split('/').pop();
             item.addEventListener("click", () => {
                 fetch(`/items/${item.getAttribute("iditem")}/updatelocal`, {
                     method: 'PUT',
@@ -50,16 +52,34 @@ function ShowItems(data){
     });
 }
 
+function ShowFirtsItems(){
+    final = false;
+    items.innerHTML = '';
+    currentPage = 1;
+    search(searchInput.value, [] , 1, exclude).then(data => ShowItems(data));
+}
+
+function loadMoreItems() {
+    currentPage++;
+    search(searchInput.value, [], currentPage, exclude).then(data => {
+        if(data.length > 0){
+            ShowItems(data)
+        } else {
+            final = true;
+        }
+    });
+}
+
 searchInput.addEventListener("input", function () {
     clearTimeout(searchEvent);
     searchEvent = setTimeout(async () => {
-        search(searchInput.value, []).then(data => ShowItems(data));
+        ShowFirtsItems();
     }, 200);
 });
 
 add.addEventListener("click", function () {
     modal.style.display = "flex";
-    search(searchInput.value, []).then(data => ShowItems(data));
+    ShowFirtsItems();
 });
 
 modalView.addEventListener("click", function (event) {
@@ -75,3 +95,9 @@ destroy.addEventListener("click", function (event) {
         event.preventDefault();
     }
 })
+
+items.addEventListener('scroll', function() {
+    if (!final && items.scrollHeight - items.scrollTop === items.clientHeight) {
+        loadMoreItems();
+    }
+});

@@ -157,6 +157,11 @@ class ItemController extends Controller
             $item->tags()->sync([]);
         }
 
+        $unusedTags = Tag::whereDoesntHave('items')->get();
+        foreach ($unusedTags as $tag) {
+            $tag->delete();
+        }
+
         return redirect()->route('items.show', $item);
     }
 
@@ -173,8 +178,17 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Item $item)
     {
-        //
+        Storage::delete($item->imagem);
+
+        $item->delete();
+
+        $unusedTags = Tag::whereDoesntHave('items')->get();
+        foreach ($unusedTags as $tag) {
+            $tag->delete();
+        }
+
+        return redirect()->route('items.index');
     }
 }

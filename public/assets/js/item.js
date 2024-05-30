@@ -3,6 +3,7 @@ const modal = document.getElementById('modal');
 const modalView = document.getElementById('addItem');
 const items = document.getElementById('itemsModal');
 const add = document.getElementById('add');
+const destroy = document.getElementById('delete');
 
 const tagsInput = document.getElementById('tagsInput');
 
@@ -68,3 +69,9 @@ modalView.addEventListener("click", function (event) {
 modal.addEventListener("click", function () {
     modal.style.display = "none";
 });
+
+destroy.addEventListener("click", function (event) {
+    if(!confirm("Certeza que você quer deletar esse item ?")){
+        event.preventDefault();
+    }
+})

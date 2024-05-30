@@ -17,7 +17,12 @@
             </div>
         </div>
     </div>
-    <p id="name">{{$item->nome}}</p>
+    <div id="nd">
+        <p id="name">{{$item->nome}}</p>
+        <a id="delete" href="{{route('items.destroy',['item' => $item])}}">
+            <img src="{{ asset('assets/imgs/delete.svg')}}">
+        </a>
+    </div>
     <div id="main">
         <div>
             <img id="image" src="{{asset(str_replace('public', 'storage', $item->imagem))}}" alt="Image preview">

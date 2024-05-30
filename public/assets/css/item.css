@@ -11,9 +11,36 @@ main p {
     margin-bottom: 10px;
 }
 
+#nd {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 #name {
     text-align: center;
     margin-bottom: 20px;
+    width: 100%;
+}
+
+#delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--detail2);
+    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+#delete:hover {
+    background-color: #825252;
+}
+
+#delete > img {
+    width: 40px;
 }
 
 #main {

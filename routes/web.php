@@ -10,7 +10,7 @@ Route::get('/items/{item}', [ItemController::class, 'show'])-> name('items.show'
 Route::get('/items/{item}/edit', [ItemController::class, 'edit'])-> name('items.edit');
 Route::put('/items/{item}', [ItemController::class, 'update'])-> name('items.update');
 Route::put('/items/{item}/updatelocal', [ItemController::class, 'updatelocal'])-> name('items.updatelocal');
-Route::delete('/items/{item}', [ItemController::class, 'destroy'])-> name('items.destroy');
+Route::get('/items/{item}/delete', [ItemController::class, 'destroy'])-> name('items.destroy');
 
 //json
 Route::post('/search', [ItemController::class, 'search'])-> name('items.search');

@@ -15,7 +15,8 @@ const tagsInput = document.getElementById('tagsInput');
 
 let used = false;
 let searchEvent = null;
-
+let currentPage = 1;
+let final = false;
 
 getTags().then(response => {
     tagify = new Tagify(tagsInput, {
@@ -30,8 +31,6 @@ getTags().then(response => {
 })
 
 function ShowItems(data){
-    items.innerHTML = '';
-
     data.forEach(item => {
         items.innerHTML += `
         <div class="itemsModal" iditem="${item.id}">
@@ -57,6 +56,24 @@ function ShowItems(data){
                 modal.style.display = "none";
             })
         });
+    });
+}
+
+function ShowFirtsItems(){
+    final = false;
+    items.innerHTML = '';
+    currentPage = 1;
+    search(searchInput.value, [] , 1).then(data => ShowItems(data));
+}
+
+function loadMoreItems() {
+    currentPage++;
+    search(searchInput.value, [], currentPage).then(data => {
+        if(data.length > 0){
+            ShowItems(data)
+        } else {
+            final = true;
+        }
     });
 }
 
@@ -118,13 +135,13 @@ function handleFiles(files) {
 searchInput.addEventListener("input", function () {
     clearTimeout(searchEvent);
     searchEvent = setTimeout(async () => {
-        search(searchInput.value, []).then(data => ShowItems(data));
+        ShowFirtsItems();
     }, 200);
 });
 
 local.addEventListener("click", function () {
     modal.style.display = "flex";
-    search(searchInput.value, []).then(data => ShowItems(data));
+    ShowFirtsItems();
 });
 
 modalView.addEventListener("click", function (event) {
@@ -139,4 +156,10 @@ localRemove.addEventListener("click", function (event) {
     event.stopPropagation();
     local.classList.remove("selected");
     fk_item.value = "";
+});
+
+items.addEventListener('scroll', function() {
+    if (!final && items.scrollHeight - items.scrollTop === items.clientHeight) {
+        loadMoreItems();
+    }
 });

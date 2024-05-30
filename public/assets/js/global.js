@@ -6,7 +6,7 @@ window.onload = function() {
 
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-async function search(string, tags){
+async function search(string, tags, page, exclude=""){
     return await fetch("/search", {
         method: 'POST',
         headers: {
@@ -15,7 +15,9 @@ async function search(string, tags){
         },
         body: JSON.stringify({
             search: string,
-            tags: tags
+            tags: tags,
+            page: page,
+            exclude: exclude
          })
     })
     .then(response => response.json())

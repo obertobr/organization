@@ -6,10 +6,10 @@ let searchInput = document.getElementById("search");
 
 let searchEvent = null;
 let tagsSelected = [];
+let currentPage = 1;
+let final = false;
 
 function ShowItems(data){
-    items.innerHTML = '';
-
     data.forEach(item => {
         items.innerHTML += `
         <a class="item" href="/items/${item.id}">
@@ -20,6 +20,13 @@ function ShowItems(data){
     });
 }
 
+function ShowFirtsItems(){
+    final = false
+    items.innerHTML = '';
+    search(searchInput.value, tagsSelected, 1).then(data => ShowItems(data));
+    currentPage = 1;
+}
+
 tagsChecks.forEach(item => {
     item.addEventListener("change", e => {
         let value = parseInt(e.target.value)
@@ -28,7 +35,7 @@ tagsChecks.forEach(item => {
         } else {
             tagsSelected = tagsSelected.filter(v => v !== value);
         }
-        search(searchInput.value, tagsSelected).then(data => ShowItems(data));
+        ShowFirtsItems();
     });
 })
 
@@ -47,8 +54,26 @@ filter.addEventListener("click", () => {
 searchInput.addEventListener("input", function () {
     clearTimeout(searchEvent);
     searchEvent = setTimeout(async () => {
-        search(searchInput.value, tagsSelected).then(data => ShowItems(data));
+        ShowFirtsItems();
     }, 200);
 });
 
-search(searchInput.value, tagsSelected).then(data => ShowItems(data));
+window.addEventListener('scroll', function() {
+    if (!final && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        loadMoreItems();
+    }
+});
+
+
+function loadMoreItems() {
+    currentPage++;
+    search(searchInput.value, tagsSelected, currentPage).then(data => {
+        if(data.length > 0){
+            ShowItems(data)
+        } else {
+            final = true;
+        }
+    });
+}
+
+search(searchInput.value, tagsSelected, 1).then(data => ShowItems(data));

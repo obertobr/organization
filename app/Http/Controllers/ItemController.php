@@ -19,32 +19,6 @@ class ItemController extends Controller
         return view('home', compact('tags'));
     }
 
-    public function search(Request $request)
-    {
-        $searchTerm = $request->input('search');
-        $tagsSelected = $request->input('tags');
-
-        $query = Item::orderBy('nome');
-
-        if(!empty($tagsSelected)){
-            $query->whereHas('tags', function($query) use ($tagsSelected) {
-                $query->whereIn('tags.id', $tagsSelected);
-            });
-        }
-
-        $query->where('nome', 'like', '%'.$searchTerm.'%');
-
-        $results = $query->select('id', 'nome', 'imagem')->get();
-
-        return response()->json($results);
-    }
-
-    public function tags()
-    {
-        $tags = Tag::query()->select('nome')->get();
-        return response()->json($tags);
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -190,5 +164,38 @@ class ItemController extends Controller
         }
 
         return redirect()->route('items.index');
+    }
+
+    //JSON ---------------------------------------------------------------------------
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        $tagsSelected = $request->input('tags');
+        $exclude = $request->input('exclude');
+
+        $query = Item::orderBy('nome');
+
+        if(!empty($tagsSelected)){
+            $query->whereHas('tags', function($query) use ($tagsSelected) {
+                $query->whereIn('tags.id', $tagsSelected);
+            });
+        }
+
+        $query->where('nome', 'like', '%'.$searchTerm.'%');
+
+        if (!empty($exclude)) {
+            $query->whereNotIn('id', $exclude);
+        }
+
+        $results = $query->paginate(12, ['id', 'nome', 'imagem'])->items();
+
+        return response()->json($results);
+    }
+
+    public function tags()
+    {
+        $tags = Tag::query()->select('nome')->get();
+        return response()->json($tags);
     }
 }

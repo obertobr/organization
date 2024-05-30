@@ -35,7 +35,7 @@ function ShowItems(data){
     data.forEach(item => {
         items.innerHTML += `
         <div class="itemsModal" iditem="${item.id}">
-            <img src="../${item.imagem.replace("public","storage")}"/>
+            <img src="./${item.imagem.replace("public","storage")}"/>
             <p>${item.nome}</p>
         </div>
         `;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Item;
 use App\Models\Tag;
@@ -108,17 +109,65 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Item $item)
     {
-        //
+        $tags = $item->tags->pluck('nome')->implode(',');
+        $item->load('parentItem');
+        return view('item_edit', compact('item', 'tags'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Item $item)
     {
-        //
+        $validatedData = $request->validate([
+            'nome' => 'required|string|max:255',
+            'descricao' => 'required|string',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'fk_item' => 'nullable|exists:items,id',
+            'tags' => 'nullable|string',
+        ]);
+
+        if ($request->hasFile('imagem')) {
+            Storage::delete($item->imagem);
+
+            $imagePath = $request->file('imagem')->store('public/images');
+            $item->imagem = $imagePath;
+        }
+
+        $item->nome = $request->nome;
+        $item->descricao = $request->descricao;
+        $item->fk_item = $request->fk_item;
+
+        $item->save();
+
+        $tags = json_decode($validatedData["tags"], true);
+
+        if (!empty($tags)) {
+            $tags = array_column($tags, 'value');
+
+            $tagIds = [];
+            foreach ($tags as $tagName) {
+                $tag = Tag::firstOrCreate(['nome' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+            $item->tags()->sync($tagIds);
+        } else {
+            $item->tags()->sync([]);
+        }
+
+        return redirect()->route('items.show', $item);
+    }
+
+    public function updatelocal(Request $request, Item $item)
+    {
+        $fkitem = $request->input('fk_item');
+
+        $item->fk_item = $fkitem;
+        $item->save();
+
+        return response()->json(['message' => 'Item updated successfully'], 200);
     }
 
     /**

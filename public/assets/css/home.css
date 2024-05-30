@@ -125,6 +125,12 @@ header {
     padding: 10px;
     border: 2px solid var(--detail2);
     border-radius: 25px;
+    text-decoration: none;
+    color: white;
+}
+
+.item:hover {
+    filter: brightness(110%);
 }
 
 .item > img {

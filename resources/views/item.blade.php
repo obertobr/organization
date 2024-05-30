@@ -34,6 +34,9 @@
             @endif
         </div>
     </div>
+    <p>Descrição:</p>
+    <textarea id="description" name="descricao" onload="adjustTextareaHeight(this)" readonly>{{$item->descricao}}</textarea>
+
     <p>Itens:</p>
     <div id="childItems">
         @foreach ($item->childItems as $childItem)
@@ -42,15 +45,18 @@
                 <p>{{$childItem->nome}}</p>
             </a>
         @endforeach
-        <div class="add childItem">
-            <img src="{{ asset('assets/imgs/plus.svg')}}" />
+        <div id="add" class="add childItem">
+            <img src="{{asset('assets/imgs/plus.svg')}}" />
             <p>Adicionar item</p>
         </div>
     </div>
-    <p>Descrição:</p>
-    <textarea id="description" name="descricao" onload="adjustTextareaHeight(this)" readonly>{{$item->descricao}}</textarea>
 
-    <a id="save" href="{{route('items.index')}}">VOLTAR</a>
+    <div id="return">
+        <a href="{{route('items.index')}}">VOLTAR</a>
+        <a href="{{route('items.edit',['item' => $item->id])}}">
+            <img src="{{asset('assets/imgs/edit.svg')}}">
+        </a>
+    </div>
 </main>
 
 @endsection

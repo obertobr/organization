@@ -17,39 +17,40 @@
             </div>
         </div>
     </div>
-    <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('items.update',['item' => $item->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="_method" value="PUT">
         <div id="main">
             <div>
                 <p>Imagem:</p>
-                <div class="upload-area" id="upload-area">
-                    <span id="upload-text">Clique<br>ou<br>arraste uma imagem</span>
+                <div class="upload-area used" id="upload-area">
+                    <span id="upload-text" hidden>Clique<br>ou<br>arraste uma imagem</span>
                     <input type="file" id="file-input" name="imagem" hidden>
-                    <div class="image-preview" id="image-preview" style="display: none;">
-                        <img id="preview-image" src="" alt="Image preview">
-                        <button type="button" id="remove-button" hidden>&times;</button>
+                    <div class="image-preview" id="image-preview">
+                        <img id="preview-image" src="{{asset(str_replace('public', 'storage', $item->imagem))}}" alt="Image preview">
+                        <button type="button" id="remove-button">&times;</button>
                     </div>
                 </div>
             </div>
             <div>
                 <p>Nome:</p>
-                <input type="text" name="nome"/>
+                <input type="text" name="nome" value="{{$item->nome}}"/>
                 <p>Tags:</p>
-                <input id="tagsInput" name="tags" type="text" />
+                <input id="tagsInput" name="tags" type="text" value="{{$tags}}"/>
             </div>
         </div>
         <p>Descrição:</p>
-        <textarea id="description" name="descricao" oninput="adjustTextareaHeight(this)"></textarea>
+        <textarea id="description" name="descricao" oninput="adjustTextareaHeight(this)">{{$item->descricao}}</textarea>
 
         <p>Local:</p>
-        <div id="local">
+        <div id="local" @if($item->fk_item) class="selected" @endif>
             <div>
-                <img id="localImg" src=""/>
-                <p id="localName"></p>
+                <img id="localImg" src="@if($item->fk_item) {{asset(str_replace('public', 'storage', $item->parentItem->imagem))}} @endif"/>
+                <p id="localName">@if($item->fk_item) {{$item->parentItem->nome}} @endif</p>
                 <button id="localRemove" type="button">&times;</button>
             </div>
             <p>Você pode selecionar um local para esse item</p>
-            <input id="fk_item" name="fk_item" type="hidden" />
+            <input id="fk_item" name="fk_item" type="hidden" value="{{$item->fk_item}}"/>
         </div>
 
         <input type="submit" value="SALVAR" id="save"/>

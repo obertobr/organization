@@ -148,10 +148,15 @@ main p {
     font-weight: 800;
 }
 
-#save {
+#return {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#return > a:nth-child(1) {
     background-color: var(--detail2);
     color: var(--detail1);
-    border: none;
     border-radius: 10px;
     font-size: 3em;
     font-weight: 800;
@@ -162,7 +167,117 @@ main p {
     text-align: center;
     text-decoration: none;
 }
+#return > a:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4em;
+    background-color: var(--detail2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.1s;
+    z-index: 0;
+}
 
-#save:hover {
+#return img {
+    width: 2.5em;
+}
+
+#return > a:hover {
     filter: brightness(120%);
+}
+
+
+#modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#addItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--detail1);
+    border: 2px solid var(--detail2);
+    border-radius: 10px;
+    width: 50%;
+    min-width: 500px;
+    height: 80%;
+    min-height: 200px;
+}
+
+#addItem > p {
+    text-align: center;
+}
+
+#addItem > input {
+    background-color: var(--bg);
+    border: 2px solid var(--detail2);
+    border-radius: 10px;
+    font-size: 2em;
+    color: white;
+    width: 95%;
+    margin-bottom: 10px;
+}
+
+#itemsModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    overflow-y: auto;
+}
+
+#itemsModal::-webkit-scrollbar {
+    width: 10px;
+}
+
+#itemsModal::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+#itemsModal::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+}
+
+.itemsModal{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--detail2);
+    border-radius: 10px;
+    padding: 5px;
+    height: 80px;
+    width: 95%;
+    transition: 0.1s;
+    user-select: none;
+    cursor: pointer;
+}
+
+.itemsModal:hover {
+    scale: 1.03;
+}
+
+.itemsModal > img {
+    height: 75px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: 0.1s;
+}
+
+.itemsModal > p {
+    margin: 0;
 }

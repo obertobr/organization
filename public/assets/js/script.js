@@ -12,10 +12,10 @@ function ShowItems(data){
 
     data.forEach(item => {
         items.innerHTML += `
-        <div class="item">
+        <a class="item" href="/items/${item.id}">
             <img src="${item.imagem.replace("public","storage")}"/>
             <p>${item.nome}</p>
-        </div>
+        </a>
         `
     });
 }

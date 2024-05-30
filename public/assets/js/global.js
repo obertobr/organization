@@ -1,3 +1,9 @@
+window.onload = function() {
+    var baseTag = document.createElement('base');
+    baseTag.setAttribute('href', window.location.origin + '/');
+    document.head.appendChild(baseTag);
+};
+
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 async function search(string, tags){

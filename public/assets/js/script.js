@@ -8,12 +8,13 @@ let searchEvent = null;
 let tagsSelected = [];
 let currentPage = 1;
 let final = false;
+let scrollLoading = false;
 
 function ShowItems(data){
     data.forEach(item => {
         items.innerHTML += `
-        <a class="item" href="/items/${item.id}">
-            <img src="${item.imagem.replace("public","storage")}"/>
+        <a class="item" href="/organization/items/${item.id}">
+            <img src="/organization/${item.imagem.replace("public","storage")}"/>
             <p>${item.nome}</p>
         </a>
         `
@@ -58,16 +59,18 @@ searchInput.addEventListener("input", function () {
     }, 200);
 });
 
-window.addEventListener('scroll', function() {
-    if (!final && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        loadMoreItems();
+window.addEventListener('scroll', async function(e) {
+    if (!scrollLoading && !final && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        scrollLoading = true;
+        await loadMoreItems();
+        scrollLoading = false;
     }
 });
 
 
-function loadMoreItems() {
+async function loadMoreItems() {
     currentPage++;
-    search(searchInput.value, tagsSelected, currentPage).then(data => {
+    await search(searchInput.value, tagsSelected, currentPage).then(data => {
         if(data.length > 0){
             ShowItems(data)
         } else {

@@ -7,7 +7,7 @@ window.onload = function() {
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 async function search(string, tags, page, exclude=""){
-    return await fetch("/search", {
+    return await fetch("/organization/search", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ async function search(string, tags, page, exclude=""){
 }
 
 async function getTags(){
-    return await fetch("/tags")
+    return await fetch("/organization/tags")
     .then(response => response.json())
     .catch(error => {
         console.error('Error:', error);

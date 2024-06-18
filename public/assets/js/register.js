@@ -17,6 +17,7 @@ let used = false;
 let searchEvent = null;
 let currentPage = 1;
 let final = false;
+let scrollLoading = false;
 
 getTags().then(response => {
     tagify = new Tagify(tagsInput, {
@@ -34,7 +35,7 @@ function ShowItems(data){
     data.forEach(item => {
         items.innerHTML += `
         <div class="itemsModal" iditem="${item.id}">
-            <img src="./${item.imagem.replace("public","storage")}"/>
+            <img src="/organization/${item.imagem.replace("public","storage")}"/>
             <p>${item.nome}</p>
         </div>
         `;
@@ -66,9 +67,9 @@ function ShowFirtsItems(){
     search(searchInput.value, [] , 1).then(data => ShowItems(data));
 }
 
-function loadMoreItems() {
+async function loadMoreItems() {
     currentPage++;
-    search(searchInput.value, [], currentPage).then(data => {
+    await search(searchInput.value, [], currentPage).then(data => {
         if(data.length > 0){
             ShowItems(data)
         } else {
@@ -158,8 +159,10 @@ localRemove.addEventListener("click", function (event) {
     fk_item.value = "";
 });
 
-items.addEventListener('scroll', function() {
-    if (!final && items.scrollHeight - items.scrollTop === items.clientHeight) {
-        loadMoreItems();
+items.addEventListener('scroll', async function() {
+    if (!scrollLoading && !final && items.scrollHeight - items.scrollTop === items.clientHeight) {
+        scrollLoading = true;
+        await loadMoreItems();
+        scrollLoading = false;
     }
 });

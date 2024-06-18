@@ -21,7 +21,7 @@ function ShowItems(data){
     data.forEach(item => {
         items.innerHTML += `
         <div class="itemsModal" iditem="${item.id}">
-            <img src="../${item.imagem.replace("public","storage")}"/>
+            <img src="/organization/${item.imagem.replace("public","storage")}"/>
             <p>${item.nome}</p>
         </div>
         `;
@@ -30,7 +30,7 @@ function ShowItems(data){
 
         DOMitems.forEach(item => {
             item.addEventListener("click", () => {
-                fetch(`/items/${item.getAttribute("iditem")}/updatelocal`, {
+                fetch(`/organization/items/${item.getAttribute("iditem")}/updatelocal`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

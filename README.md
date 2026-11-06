@@ -1,66 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="docs/banner.png" alt="Organization Banner" width="100%">
 </p>
 
-## About Laravel
+# Organization
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sistema simples em Laravel para cadastrar e organizar objetos e seus locais físicos de armazenamento.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A ideia principal do projeto é resolver a dúvida de *"onde é que eu guardei tal coisa?"*. Em vez de ser só uma lista solta de itens, os objetos podem ser vinculados uns dentro dos outros de forma hierárquica (por exemplo: um cabo dentro de uma gaveta, que fica dentro de um armário, que fica no escritório).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Telas do Sistema
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Página Inicial (Busca e Filtros)
+Lista os itens cadastrados com busca por texto em tempo real, filtro lateral por tags e rolagem infinita.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+![Página Inicial](docs/screenshots/home.png)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Detalhes do Item
+Mostra a foto, a descrição, as tags, o local onde o item está guardado (com link direto para ele) e a lista de itens que estão guardados dentro dele.
 
-## Laravel Sponsors
+![Detalhes do Item](docs/screenshots/item_detail.png)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Cadastro de Item
+Permite cadastrar o nome, descrição, foto, adicionar tags e selecionar em qual item/local existente ele vai ficar guardado.
 
-### Premium Partners
+![Cadastro de Item](docs/screenshots/create.png)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## Como o sistema funciona
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Hierarquia de Locais**: Qualquer item pode ser tanto um "objeto" quanto um "local". Quando você define o campo `Local` de um item, ele passa a pertencer àquele compartimento. Se você abrir o compartimento, verá todos os itens que estão lá dentro.
+- **Tags dinâmicas**: Você pode adicionar qualquer tag na hora de cadastrar (usando a caixinha com auto-complete). Se uma tag deixar de ser usada por todos os itens, ela é removida automaticamente do banco.
+- **Associação rápida**: Na página de visualização de um local, dá para vincular novos itens a ele diretamente clicando em "Adicionar item".
+- **Upload de fotos**: Cada item tem uma imagem associada para facilitar a identificação visual.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Tecnologias utilizadas
 
-## Security Vulnerabilities
+- **PHP 8.2+** com **Laravel 11**
+- **SQLite** como banco de dados padrão
+- **JavaScript Vanilla** e **CSS** próprio (sem frameworks pesados no front)
+- **Tagify** para o input de tags
+- **Vite** para o bundle de assets
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Como rodar o projeto localmente
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Pré-requisitos
+- PHP 8.2 ou superior (com extensões `pdo_sqlite`, `sqlite3`, `dom`, `gd` e `xml` ativas)
+- Composer
+- Node.js e npm
+
+### Passo a passo
+
+1. **Clonar o repositório:**
+   ```bash
+   git clone https://github.com/obertobr/organization.git
+   cd organization
+   ```
+
+2. **Instalar as dependências do PHP:**
+   ```bash
+   composer install
+   ```
+
+3. **Instalar as dependências do front e gerar o build:**
+   ```bash
+   npm install
+   npm run build
+   ```
+
+4. **Configurar o arquivo de ambiente:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Criar o banco SQLite e rodar as migrações:**
+   ```bash
+   touch database/database.sqlite
+   php artisan migrate
+   ```
+
+6. **Criar o link para as imagens públicas:**
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Iniciar o servidor de desenvolvimento:**
+   ```bash
+   php artisan serve
+   ```
+
+O sistema estará acessível em `http://localhost:8000`.
+
+---
+
+## Como a IA foi utilizada neste projeto?
+
+O código da aplicação (arquitetura Laravel, regras de negócio no backend, modelagem do banco de dados e interface em JavaScript e CSS) foi desenvolvido manualmente pelo autor. A inteligência artificial foi utilizada pontualmente e exclusivamente para a elaboração deste README: auxiliando na organização do texto descritivo, formatação do guia de instalação e criação do banner vetorial.
+
